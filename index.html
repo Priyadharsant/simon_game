@@ -137,6 +137,10 @@
              padding: 20px 40px;
              text-shadow: 0 0 15px red;
          }
+         .redbg{
+             background : #ff4040;
+         }
+         
          @keyframes blink {
              50%{
                  color: white ;
@@ -150,6 +154,7 @@
         <h1>SIMON GAME</h1>
     </header>
     <section class="score-board">
+        <audio src="wrong.mp3"></audio>
         <p class="level">Level : 0</p>
         <p class="max-level">Max-level : 0</p>
     </section>
@@ -173,8 +178,10 @@
         </span>
         <button>Play</button>
     </main>
+    
     <section class="game_over">
-        <p>Game Over!</p>
+        <p class="end">Game Over!</p>
+        <p class='next'></p>
     </section>
     <section class = 'on_alert'>
         💬 Click play button to start game!
