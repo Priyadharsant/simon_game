@@ -5,10 +5,12 @@ let random = [];
 let click = 0;     
 let btn = $("button"); 
 let level_lbl = $(".level");
-let max_level = $(".max-level")
-let alert_msg = $(".on_alert")
-let game_over = $('.game_over')
-
+let max_level = $(".max-level");
+let alert_msg = $(".on_alert");
+let game_over = $('.end');
+let next_level = $('.next')
+let bg = $('body');
+let sound = document.querySelector('audio');
 function simon() {
     console.log('Level : ' + level);
     
@@ -56,18 +58,26 @@ $(".btn").click(function() {
 
        
         if (click === random.length) {
-            setTimeout(simon, 300);
+            next_level.text("Level "+level)
+            next_level.show();
+            setTimeout(() => {
+                next_level.hide();
+            }, 800);
+            setTimeout(simon,1500);
         }
     } else {
         console.log("Wrong! Game Over");
+        sound.play();
         level_lbl.text("Level : 0")
         game = "off";
         level = 1;
         random = [];
         game_over.show(); 
+        bg.addClass("redbg")
         btn.removeClass("btn-inactive") 
         setTimeout(() => {
                 game_over.hide(); 
+                bg.removeClass("redbg")
             },1500);
         
         start();
@@ -75,6 +85,7 @@ $(".btn").click(function() {
 });
 alert_msg.hide()
 game_over.hide()
+next_level.hide();
 function start(){
     if(localStorage.getItem('max_level') === null)
     {
