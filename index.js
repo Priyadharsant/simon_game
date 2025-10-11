@@ -1,5 +1,6 @@
 let game = "off";
 let level = 1;
+let played = false;
 let colors = ['green','red','blue','yellow'];
 let random = [];   
 let click = 0;     
@@ -32,9 +33,92 @@ function simon() {
         }, i * 1000); 
     }
 
-    if (level > localStorage.getItem('max_level')) {
-        max_level.text('Max-level : ' + level)
-        localStorage.setItem('max_level', level)
+    
+    level++;
+    click = 0;
+}
+
+$(".btn").click(function() {
+    let $click = $(this)
+    let chosen = $click.attr("id"); 
+    
+    if(game === 'off')
+    {
+        alert_msg.show();   
+    }
+    else{
+        alert_msg.hide()
+    }
+    
+    
+    if (chosen === random[click]) {
+        click++;
+
+       
+        if (click === random.length) {
+            next_level.text("Level "+level)
+            next_level.show();
+            setTimeout(() => {
+                next_level.hide();
+            }, 800);
+            if (level > localStorage.getItem('max_level')) {
+                max_level.text('Max-level : ' + level)
+                localStorage.setItem('max_level', level)
+                if(!played) {
+                    sound.src = 'valthukal.mp3';
+                    sound.play();
+                    played = true;
+                }
+            }
+            else{
+                sound.src = "correct.mp3"
+                sound.play()
+            }
+            setTimeout(simon,1500);
+        }
+    } else {
+        console.log("Wrong! Game Over");
+        sound.src = "wrong.mp3"
+        sound.play();
+        level_lbl.text("Level : 0")
+        game = "off";
+        level = 1;
+        random = [];
+        game_over.show(); 
+        bg.addClass("redbg")
+        btn.removeClass("btn-inactive") 
+        setTimeout(() => {
+                game_over.hide(); 
+                bg.removeClass("redbg")
+            },1500);
+        
+        start();
+    }
+});
+alert_msg.hide()
+game_over.hide()
+next_level.hide();
+function start(){
+    if(localStorage.getItem('max_level') === null)
+    {
+        localStorage.setItem('max_level', 0)
+    }
+    else{
+        max_level.text('Max-level : ' + localStorage.getItem('max_level'))
+    }
+    btn.click(function () {
+        if (game === 'off') {
+            alert_msg.hide()
+            game = 'on';
+            btn.addClass("btn-inactive")
+            game_over.hide()
+            simon();
+        }
+    });
+}
+
+ 
+start();        localStorage.setItem('max_level', level)
     }
     level++;
     click = 0;
